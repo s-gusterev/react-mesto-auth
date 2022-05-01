@@ -8,7 +8,6 @@ function Header() {
       <a href="./index.html" className="logo header__logo"><img src={logo} alt="Логотип"
           className="logo__img" /></a>
     </header>
-    
     );
 }
 

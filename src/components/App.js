@@ -4,15 +4,28 @@ import "../index.css";
 import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
+import ImagePopup from "./ImagePopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
-  // const [isClosePopup, setclosePopup] = React.useState(false);
+  const[selectedCard, setSelectedCard] = useState({isOpen: false, 
+    name: "", 
+    link: "", })
+
+  function handleCardClick(card){
+    console.log('click')
+    setSelectedCard({
+      isOpen:true,
+      name: card.name,
+      link: card.link
+    })
+  }
+
 
   function closeAllPopups(feature) {
-    feature(false);
+    feature(false)
   }
 
   return (
@@ -22,6 +35,7 @@ function App() {
         onEditProfile={setEditProfilePopupOpen}
         onAddPlace={setAddPlacePopupOpen}
         onEditAvatar={setEditAvatarPopupOpen}
+        onCardClick={handleCardClick}
       />
       <Footer />
       <PopupWithForm
@@ -115,19 +129,8 @@ function App() {
         </label>
       </PopupWithForm>
 
-      <template id="card">
-        <li className="card">
-          <div className="card__text">
-            <h2 className="card__title"></h2>
-            <div className="card__like-section">
-              <button className="card__like" type="button"></button>
-              <span className="card__like-info"></span>
-            </div>
-          </div>
-          <img className="card__img" src="#" alt="изображение" />
-          <button className="card__del" type="button"></button>
-        </li>
-      </template>
+      <ImagePopup onClose={() => closeAllPopups(setSelectedCard)} card={selectedCard}/>  
+
     </div>
   );
 }

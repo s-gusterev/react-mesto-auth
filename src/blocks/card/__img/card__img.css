@@ -3,6 +3,8 @@
   height: 282px;
   object-fit: cover;
   cursor: pointer;
+  background-size: cover;
+  background-position: center;
 }
 
 @media screen and (max-width: 917px) {
