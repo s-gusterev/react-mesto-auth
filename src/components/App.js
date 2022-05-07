@@ -12,6 +12,7 @@ function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState({
     isOpen: false,
     name: "",
@@ -25,11 +26,10 @@ function App() {
     _id: ""
   });
 
+
   useEffect(() => {
     api.getProfile()
       .then((res) => {
-        console.log(res);
-
         setCurrentUser({
           name: res.name,
           about: res.about,
@@ -38,6 +38,16 @@ function App() {
         })
 
       })
+      .catch((err) => {
+        console.log(err)
+      });
+
+    api.getInitialCards()
+      .then((res) => {
+        setCards(res);
+        console.log(res);
+      })
+
       .catch((err) => {
         console.log(err)
       });
@@ -71,6 +81,7 @@ function App() {
           onAddPlace={setAddPlacePopupOpen}
           onEditAvatar={setEditAvatarPopupOpen}
           onCardClick={handleCardClick}
+          cards={cards}
         />
         <Footer />
         <PopupWithForm

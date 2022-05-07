@@ -11,6 +11,14 @@
   transition: opacity 250ms ease;
 }
 
-.card__del:hover{
- opacity: .6;
+.card__del:hover {
+  opacity: .6;
+}
+
+.card__del_visible {
+  visibility: visible;
+}
+
+.card__del_hidden {
+  visibility: hidden;
 }

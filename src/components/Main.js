@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import "../index.css";
-import api from "../utils/api";
 import Card from "./Card";
 
-function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick }) {
-  const [cards, setCards] = useState([]);
+function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards }) {
+
   const user = React.useContext(CurrentUserContext);
-
-  useEffect(() => {
-    api.getInitialCards()
-      .then((res) => {
-        setCards(res);
-        console.log(res);
-      })
-
-      .catch((err) => {
-        console.log(err)
-      });
-  }, []);
 
   function handleEditAvatarClick() {
     onEditAvatar(true);
@@ -65,7 +52,9 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick }) {
         </div>
         <ul className="cards">
           {cards.map((card) => (
-            <Card name={card.name} likes={card.likes.length} link={card.link} key={card._id} onCardClick={onCardClick} card={card} />
+            // console.log(card.owner._id)
+            <Card name={card.name} likes={card.likes.length} link={card.link} key={card._id} onCardClick={onCardClick} card={card} ownerId={card.owner._id} />
+
           ))}
         </ul>
       </section>
