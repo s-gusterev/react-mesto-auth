@@ -52,9 +52,16 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards }) {
         </div>
         <ul className="cards">
           {cards.map((card) => (
-            // console.log(card.owner._id)
-            <Card name={card.name} likes={card.likes.length} link={card.link} key={card._id} onCardClick={onCardClick} card={card} ownerId={card.owner._id} />
-
+            < Card
+              card={card}
+              name={card.name}
+              likesNumber={card.likes.length}
+              likes={card.likes}
+              link={card.link}
+              key={card._id}
+              ownerId={card.owner._id}
+              onCardClick={onCardClick}
+            />
           ))}
         </ul>
       </section>
