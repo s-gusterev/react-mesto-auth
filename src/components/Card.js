@@ -1,42 +1,41 @@
 import React from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
-function Card(props) {
+function Card({ card, onCardLike, onCardClick, onCardDelete }) {
 
   const currentUser = React.useContext(CurrentUserContext);
-
-  const isOwn = props.ownerId === currentUser._id;
+  const isOwn = card.owner._id === currentUser._id;
 
   const cardDeleteButtonClassName = (
     `card__del ${isOwn ? 'card__del_visible' : 'card__del_hidden'}`
   );
 
-  const isLiked = props.likes.some(i => i._id === currentUser._id);
+  const isLiked = card.likes.some(i => i._id === currentUser._id);
 
   const cardLikeButtonClassName = (`card__like ${isLiked ? 'card__like_active' : ''}`);
 
   function handleClick() {
-    props.onCardClick(props.card);
+    onCardClick(card);
   }
 
 
   function handleLikeClick() {
-    props.onCardLike(props.card);
+    onCardLike(card);
   }
 
   function handleDeleteClick() {
-    props.onCardDelete(props.card);
+    onCardDelete(card);
   }
 
   return (
     <li className="card">
       <div className="card__text">
-        <h2 className="card__title">{props.name}</h2>
+        <h2 className="card__title">{card.name}</h2>
         <div className="card__like-section">
           <button className={cardLikeButtonClassName} type="button" onClick={handleLikeClick}></button>
-          <span className="card__like-info">{props.likesNumber}</span>
+          <span className="card__like-info">{card.likes.length}</span>
         </div>
       </div>
-      <div className="card__img" style={{ backgroundImage: `url(${props.link})` }} onClick={handleClick} ></div>
+      <div className="card__img" style={{ backgroundImage: `url(${card.link})` }} onClick={handleClick} ></div>
       <button className={cardDeleteButtonClassName} type="button" onClick={handleDeleteClick}></button>
     </li>
   )

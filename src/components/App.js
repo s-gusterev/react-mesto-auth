@@ -116,12 +116,13 @@ function App() {
           about: res.about,
           avatar: res.avatar,
           _id: res._id
-        })
+        });
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err)
       });
-    closeAllPopups()
+
   }
 
   function handleUpdateAvatar(user) {
@@ -133,12 +134,12 @@ function App() {
           name: res.name,
           about: res.about,
           _id: res._id
-        })
+        });
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err)
       });
-    closeAllPopups()
   }
 
 
@@ -149,11 +150,12 @@ function App() {
     api.addCard(name, link)
       .then((res) => {
         setCards([res, ...cards]);
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(err)
       })
-    closeAllPopups()
+
   }
 
   return (

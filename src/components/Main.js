@@ -54,12 +54,7 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards, onC
           {cards.map((card) => (
             < Card
               card={card}
-              name={card.name}
-              likesNumber={card.likes.length}
-              likes={card.likes}
-              link={card.link}
               key={card._id}
-              ownerId={card.owner._id}
               onCardClick={onCardClick}
               onCardLike={onCardLike}
               onCardDelete={onCardDelete}
