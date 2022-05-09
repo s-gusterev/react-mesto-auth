@@ -8,6 +8,7 @@ import ImagePopup from "./ImagePopup";
 import api from "../utils/api";
 import CurrentUserContext from "../contexts/CurrentUserContext"
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -53,6 +54,7 @@ function App() {
         console.log(err)
       });
   }, []);
+
 
   function handleCardClick(card) {
     console.log('click')
@@ -109,7 +111,21 @@ function App() {
         })
       });
 
-    closeAllPopups(setEditAvatarPopupOpen)
+    closeAllPopups()
+  }
+
+  function handleUpdateAvatar(user) {
+    const { avatar } = user;
+    api.updateAvatar(avatar).then((res) => {
+      setCurrentUser({
+        avatar: res.avatar,
+        name: res.name,
+        about: res.about,
+        _id: res._id
+      })
+
+      closeAllPopups()
+    })
   }
 
 
@@ -166,25 +182,7 @@ function App() {
 
         <PopupWithForm title="Вы уверены?" name="confirm" btnText="Да" />
 
-        <PopupWithForm
-          title="Обновить аватар"
-          name="edit-avatar"
-          btnText="Обновить"
-          isOpen={isEditAvatarPopupOpen}
-          onClose={() => closeAllPopups(setEditAvatarPopupOpen)}
-        >
-          <label className="popup__label" htmlFor="input-avatar">
-            <input
-              className="popup__input"
-              type="url"
-              name="avatar"
-              id="input-avatar"
-              required
-              placeholder="Ссылка на аватар"
-            />
-            <span className="popup__input-error input-avatar-error"></span>
-          </label>
-        </PopupWithForm>
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 
         <ImagePopup onClose={closeAllPopups} card={selectedCard} />
 
