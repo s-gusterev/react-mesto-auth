@@ -2,7 +2,7 @@
 
 ## URL
 
-[http://bcopywr.bget.ru/mesto-react/](http://bcopywr.bget.ru/mesto-react/ "Открыть проект")
+
 
 ## Описание проекта
 
