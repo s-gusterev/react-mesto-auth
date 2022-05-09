@@ -2,7 +2,6 @@ import React from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import "../index.css";
 import Card from "./Card";
-// import api from "../utils/api";
 
 function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards, onCardLike, onCardDelete }) {
 
@@ -18,7 +17,6 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards, onC
   function handleAddPlaceClick() {
     onAddPlace(true);
   }
-
 
   return (
     <main className="main">

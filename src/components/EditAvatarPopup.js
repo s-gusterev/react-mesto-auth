@@ -5,6 +5,7 @@ import PopupWithForm from "./PopupWithForm";
 function editAvatarPopup(props) {
 
   const valueRef = useRef();
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -12,7 +13,6 @@ function editAvatarPopup(props) {
       avatar: valueRef.current.value
     });
   }
-
 
   return (
     <PopupWithForm

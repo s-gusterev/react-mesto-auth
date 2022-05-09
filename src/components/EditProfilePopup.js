@@ -5,14 +5,11 @@ import CurrentUserContext from "../contexts/CurrentUserContext"
 
 function editProfilePopup(props) {
 
-  const [name, setName] = useState('123');
-  const [description, setDescription] = useState('123')
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('')
 
-  // Подписка на контекст
   const currentUser = React.useContext(CurrentUserContext);
 
-  // После загрузки текущего пользователя из API
-  // его данные будут использованы в управляемых компонентах.
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
@@ -20,16 +17,13 @@ function editProfilePopup(props) {
 
 
   function handleSubmit(e) {
-    // Запрещаем браузеру переходить по адресу формы
     e.preventDefault();
 
-    // Передаём значения управляемых компонентов во внешний обработчик
     props.onUpdateUser({
       name,
       about: description,
     });
   }
-
 
   function handleChangeName(e) {
     setName(e.target.value);
@@ -39,7 +33,6 @@ function editProfilePopup(props) {
     setDescription(e.target.value);
   }
 
-
   return (
     <PopupWithForm
       title="Редактировать профиль"
@@ -48,8 +41,6 @@ function editProfilePopup(props) {
       isOpen={props.isOpen}
       onClose={props.onClose}
       onSubmit={handleSubmit}
-
-    // onClose={() => closeAllPopups(setEditProfilePopupOpen)}
     >
       <label className="popup__label" htmlFor="input-name">
         <input
