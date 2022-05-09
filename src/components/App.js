@@ -54,10 +54,6 @@ function App() {
       });
   }, []);
 
-
-  console.log(currentUser)
-
-
   function handleCardClick(card) {
     console.log('click')
     setSelectedCard({
@@ -68,8 +64,18 @@ function App() {
   }
 
 
-  function closeAllPopups(feature) {
-    feature(false)
+  // function closeAllPopups(feature) {
+  //   feature(false)
+  // }
+
+
+  function closeAllPopups() {
+    setEditProfilePopupOpen(false);
+    setEditAvatarPopupOpen(false);
+    setAddPlacePopupOpen(false);
+    setSelectedCard({
+      isOpen: false
+    })
   }
 
 
@@ -91,6 +97,22 @@ function App() {
       })
   }
 
+  function handleUpdateUser(user) {
+    const { name, about } = user
+    api.editProfile(name, about)
+      .then((res) => {
+        setCurrentUser({
+          name: res.name,
+          about: res.about,
+          avatar: res.avatar,
+          _id: res._id
+        })
+      });
+
+    closeAllPopups(setEditAvatarPopupOpen)
+  }
+
+
   return (
 
     <CurrentUserContext.Provider value={currentUser}>
@@ -111,7 +133,7 @@ function App() {
           name="card-add"
           btnText="Создать"
           isOpen={isAddPlacePopupOpen}
-          onClose={() => closeAllPopups(setAddPlacePopupOpen)}
+          onClose={closeAllPopups}
         >
           <label className="popup__label" htmlFor="input-place">
             <input
@@ -140,7 +162,7 @@ function App() {
           "
         </PopupWithForm>
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={() => closeAllPopups(setEditProfilePopupOpen)} />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
 
         <PopupWithForm title="Вы уверены?" name="confirm" btnText="Да" />
 
@@ -164,7 +186,7 @@ function App() {
           </label>
         </PopupWithForm>
 
-        <ImagePopup onClose={() => closeAllPopups(setSelectedCard)} card={selectedCard} />
+        <ImagePopup onClose={closeAllPopups} card={selectedCard} />
 
       </div>
     </CurrentUserContext.Provider>
