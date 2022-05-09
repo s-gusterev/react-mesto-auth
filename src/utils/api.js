@@ -75,6 +75,10 @@ class Api {
     }).then(this._checkResponse);
   }
 
+  changeLikeCardStatus(id, isLiked) {
+    return isLiked ? this.addLike(id) : this.deleteLike(id)
+  }
+
   // Обновление аватара
   updateAvatar(avatar) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {

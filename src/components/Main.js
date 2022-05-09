@@ -2,8 +2,9 @@ import React from "react";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import "../index.css";
 import Card from "./Card";
+// import api from "../utils/api";
 
-function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards }) {
+function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards, onCardLike, onCardDelete }) {
 
   const user = React.useContext(CurrentUserContext);
 
@@ -17,7 +18,8 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards }) {
   function handleAddPlaceClick() {
     onAddPlace(true);
   }
-  // console.log(currentUser);
+
+
   return (
     <main className="main">
       <section className="profile main__profile">
@@ -61,6 +63,8 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick, cards }) {
               key={card._id}
               ownerId={card.owner._id}
               onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
             />
           ))}
         </ul>
