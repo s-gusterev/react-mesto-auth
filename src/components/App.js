@@ -11,6 +11,7 @@ import AddPlacePopup from './AddPlacePopup';
 import CurrentUserContext from '../contexts/CurrentUserContext';
 import Register from './Register';
 import Login from './Login';
+import InfoTooltip from './InfoTooltip';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
     _id: '',
   });
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
 
   useEffect(() => {
     api
@@ -207,6 +208,7 @@ function App() {
         />
         <ImagePopup onClose={closeAllPopups} card={selectedCard} />
       </div>
+      <InfoTooltip isOpen={false} />
     </CurrentUserContext.Provider>
   );
 }
