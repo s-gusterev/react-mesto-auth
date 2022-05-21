@@ -59,3 +59,8 @@
 @import url(./blocks/popup/__container/_type/popup__container_type_auth.css);
 @import url(./blocks/popup/__img-auth/popup__img-auth.css);
 @import url(./blocks/popup/__text/popup__text.css);
+@import url(./blocks/header/__login/header__login.css);
+@import url(./blocks/header/__login-info/header__login-info.css);
+@import url(./blocks/header/__login-link/header__login-link.css);
+@import url(./blocks/header/__login-link/_type/header__login-link_type_false.css);
+@import url(./blocks/header/__login-link/_type/header__login-link_type_true.css);

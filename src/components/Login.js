@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../index.css';
 
-function Login() {
+function Login(props) {
+  useEffect(() => {
+    props.loginText();
+    props.loginPath();
+  }, []);
   return (
     <section className='auth root__auth'>
       <h1 className='auth__title'>Вход</h1>

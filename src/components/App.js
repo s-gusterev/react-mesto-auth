@@ -13,6 +13,7 @@ import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
@@ -32,7 +33,9 @@ function App() {
     _id: '',
   });
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loginText, setLoginText] = useState('');
+  const [loginPatch, setLoginPatch] = useState('');
 
   useEffect(() => {
     api
@@ -166,9 +169,13 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='root__container'>
-        <Header />
+        <Header
+          loggedIn={loggedIn}
+          textLink={loginText}
+          loginPatch={loginPatch}
+        />
         <Switch>
-          <Route exact path='/app'>
+          {/* <Route exact path='/app'>
             <Main
               onEditProfile={setEditProfilePopupOpen}
               onAddPlace={setAddPlacePopupOpen}
@@ -178,17 +185,44 @@ function App() {
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
             />
+          </Route> */}
+          <ProtectedRoute
+            exact
+            path='/'
+            loggedIn={loggedIn}
+            component={Main}
+            onEditProfile={setEditProfilePopupOpen}
+            onAddPlace={setAddPlacePopupOpen}
+            onEditAvatar={setEditAvatarPopupOpen}
+            onCardClick={handleCardClick}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          />
+          <Route path='/sign-up'>
+            <Register
+              loginText={() => {
+                setLoginText('Войти');
+              }}
+              loginPath={() => {
+                setLoginPatch('/sign-in');
+              }}
+            />
+          </Route>
+          <Route path='/sign-in'>
+            <Login
+              loginText={() => {
+                setLoginText('Регистрация');
+              }}
+              loginPath={() => {
+                setLoginPatch('/sign-up');
+              }}
+            />
           </Route>
 
-          <Route exact path='/sign-up'>
-            <Register />
-          </Route>
-          <Route exact path='/sign-in'>
-            <Login />
-          </Route>
-          <Route exact path='/'>
+          {/* <Route exact path='/'>
             {loggedIn ? <Redirect to='/app' /> : <Redirect to='/sign-in' />}
-          </Route>
+          </Route> */}
         </Switch>
         <Footer />
         <EditProfilePopup
