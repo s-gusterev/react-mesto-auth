@@ -33,7 +33,7 @@ function App() {
     _id: '',
   });
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [loginText, setLoginText] = useState('');
   const [loginPatch, setLoginPatch] = useState('');
 

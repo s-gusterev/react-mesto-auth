@@ -64,3 +64,5 @@
 @import url(./blocks/header/__login-link/header__login-link.css);
 @import url(./blocks/header/__login-link/_type/header__login-link_type_false.css);
 @import url(./blocks/header/__login-link/_type/header__login-link_type_true.css);
+@import url(./blocks/main/main.css);
+@import url(./blocks/footer/footer.css);
