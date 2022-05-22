@@ -1,7 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../index.css';
 
 function Login(props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    props.handleLogin({
+      password,
+      email,
+    });
+  }
+
+  function handleChangeEmail(e) {
+    setEmail(e.target.value);
+  }
+
+  function handleChangePassword(e) {
+    setPassword(e.target.value);
+  }
+
   useEffect(() => {
     props.loginText();
     props.loginPath();
@@ -10,13 +30,15 @@ function Login(props) {
     <main className='main'>
       <section className='auth root__auth'>
         <h1 className='auth__title'>Вход</h1>
-        <form name='login' className='auth__form'>
+        <form name='login' className='auth__form' onSubmit={handleSubmit}>
           <input
             className='auth__input auth__input_type_email'
             type='email'
             name='email'
             placeholder='Email'
             required
+            value={email}
+            onChange={handleChangeEmail}
           />
           <input
             className='auth__input auth__input_type_password'
@@ -24,6 +46,8 @@ function Login(props) {
             name='password'
             placeholder='Пароль'
             required
+            value={password}
+            onChange={handleChangePassword}
           />
           <button className='auth__button' type='submit'>
             Войти

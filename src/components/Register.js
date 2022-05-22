@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// import { useEffect } from 'react/cjs/react.production.min';
+
 function Register(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -8,9 +8,9 @@ function Register(props) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    props.onRegistered({
-      email,
+    props.handleRegister({
       password,
+      email,
     });
   }
 
@@ -21,10 +21,6 @@ function Register(props) {
   function handleChangePassword(e) {
     setPassword(e.target.value);
   }
-
-  // const handlePathChange = (newPath) => {
-  //   props.onPathChange(newPath);
-  // };
 
   useEffect(() => {
     props.loginText();

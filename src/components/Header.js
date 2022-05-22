@@ -4,20 +4,22 @@ import logo from '../images/logo.svg';
 import '../index.css';
 
 function Header(props) {
+  const { email } = props.userData || {};
   return (
     <header className='header root__header'>
-      <a href='/' className='logo header__logo'>
+      <Link to='/' className='logo header__logo'>
         <img src={logo} alt='Логотип' className='logo__img' />
-      </a>
+      </Link>
       {props.loggedIn ? (
         <div className='header__login'>
-          <p className='header__login-info'>email@emal.ru</p>
-          <a
+          <p className='header__login-info'>{email}</p>
+          <Link
+            onClick={props.handleSignOut}
             className='header__login-link header__login-link_type_true'
-            href='/'
+            to='/'
           >
             Выйти
-          </a>
+          </Link>
         </div>
       ) : (
         <div className='header__login'>

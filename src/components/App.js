@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import '../index.css';
+import iconOk from '../images/icon-ok.svg';
+import iconError from '../images/icon-error.svg';
 import api from '../utils/api';
 import Header from './Header';
 import Main from './Main';
@@ -12,10 +15,12 @@ import CurrentUserContext from '../contexts/CurrentUserContext';
 import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
-import { Switch, Route, Redirect } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
+import * as apiMesto from '../utils/apiMesto';
 
 function App() {
+  const history = useHistory();
+  const [userData, setUserData] = useState({});
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
@@ -33,9 +38,15 @@ function App() {
     _id: '',
   });
 
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
   const [loginText, setLoginText] = useState('');
   const [loginPatch, setLoginPatch] = useState('');
+
+  const [tooltip, setTooltip] = useState({
+    isOpen: false,
+    message: null,
+    image: null,
+  });
 
   useEffect(() => {
     api
@@ -60,6 +71,7 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
+    tokenCheck();
 
     /* 
     function closeEscPoppup(e) {
@@ -71,6 +83,12 @@ function App() {
     return () => window.removeEventListener('keydown', closeEscPoppup);
 */
   }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      history.push('/');
+    }
+  }, [loggedIn]);
 
   function handleCardClick(card) {
     setSelectedCard({
@@ -86,6 +104,11 @@ function App() {
     setAddPlacePopupOpen(false);
     setSelectedCard({
       isOpen: false,
+    });
+    setTooltip({
+      isOpen: false,
+      // message: null,
+      // image: null,
     });
   }
 
@@ -166,6 +189,76 @@ function App() {
       });
   }
 
+  function handleRegister({ password, email }) {
+    return apiMesto
+      .register(password, email)
+      .then(() => {
+        history.push('/sign-in');
+        setTooltip({
+          isOpen: true,
+          message: 'Вы успешно зарегистрировались!',
+          image: iconOk,
+        });
+      })
+
+      .catch((err) => {
+        setTooltip({
+          isOpen: true,
+          message: 'Что-то пошло не так! Попробуйте ещё раз.',
+          image: iconError,
+        });
+        console.log(err);
+      });
+  }
+
+  function handleLogin({ password, email }) {
+    return apiMesto
+      .authorize(password, email)
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem('jwt', data.token);
+          // console.log(loggedIn);
+          tokenCheck();
+        }
+      })
+
+      .catch((err) => {
+        setTooltip({
+          isOpen: true,
+          message: 'Что-то пошло не так! Попробуйте ещё раз',
+          image: iconError,
+        });
+        console.log(err);
+      });
+  }
+
+  function tokenCheck() {
+    if (localStorage.getItem('jwt')) {
+      let jwt = localStorage.getItem('jwt');
+      apiMesto
+        .getContent(jwt)
+        .then((res) => {
+          if (res) {
+            let userData = {
+              email: res.data.email,
+            };
+            setLoggedIn(true);
+            setUserData(userData);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+
+  function signOut() {
+    localStorage.removeItem('jwt');
+    setLoggedIn(false);
+    setUserData(null);
+    history.push('/');
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='root__container'>
@@ -173,19 +266,10 @@ function App() {
           loggedIn={loggedIn}
           textLink={loginText}
           loginPatch={loginPatch}
+          userData={userData}
+          handleSignOut={signOut}
         />
         <Switch>
-          {/* <Route exact path='/app'>
-            <Main
-              onEditProfile={setEditProfilePopupOpen}
-              onAddPlace={setAddPlacePopupOpen}
-              onEditAvatar={setEditAvatarPopupOpen}
-              onCardClick={handleCardClick}
-              cards={cards}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-            />
-          </Route> */}
           <ProtectedRoute
             exact
             path='/'
@@ -201,6 +285,7 @@ function App() {
           />
           <Route path='/sign-up'>
             <Register
+              handleRegister={handleRegister}
               loginText={() => {
                 setLoginText('Войти');
               }}
@@ -211,6 +296,7 @@ function App() {
           </Route>
           <Route path='/sign-in'>
             <Login
+              handleLogin={handleLogin}
               loginText={() => {
                 setLoginText('Регистрация');
               }}
@@ -219,10 +305,6 @@ function App() {
               }}
             />
           </Route>
-
-          {/* <Route exact path='/'>
-            {loggedIn ? <Redirect to='/app' /> : <Redirect to='/sign-in' />}
-          </Route> */}
         </Switch>
         <Footer />
         <EditProfilePopup
@@ -241,8 +323,13 @@ function App() {
           onAddPlace={handleAddPlaceSubmit}
         />
         <ImagePopup onClose={closeAllPopups} card={selectedCard} />
+        <InfoTooltip
+          onClose={closeAllPopups}
+          message={tooltip.message}
+          isOpen={tooltip.isOpen}
+          image={tooltip.image}
+        />
       </div>
-      <InfoTooltip isOpen={false} />
     </CurrentUserContext.Provider>
   );
 }
