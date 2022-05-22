@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+
 import '../index.css';
 
 function Login(props) {
@@ -22,10 +23,6 @@ function Login(props) {
     setPassword(e.target.value);
   }
 
-  useEffect(() => {
-    props.loginText();
-    props.loginPath();
-  }, []);
   return (
     <main className='main'>
       <section className='auth root__auth'>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Route, Switch, Link } from 'react-router-dom';
 import logo from '../images/logo.svg';
 import '../index.css';
 
@@ -10,27 +10,36 @@ function Header(props) {
       <Link to='/' className='logo header__logo'>
         <img src={logo} alt='Логотип' className='logo__img' />
       </Link>
-      {props.loggedIn ? (
-        <div className='header__login'>
-          <p className='header__login-info'>{email}</p>
-          <Link
-            onClick={props.handleSignOut}
-            className='header__login-link header__login-link_type_true'
-            to='/'
-          >
-            Выйти
-          </Link>
-        </div>
-      ) : (
-        <div className='header__login'>
-          <Link
-            className='header__login-link header__login-link_type_false'
-            to={props.loginPatch}
-          >
-            {props.textLink}
-          </Link>
-        </div>
-      )}
+      <div className='header__login'>
+        <Switch>
+          <Route exact path='/'>
+            <p className='header__login-info'>{email}</p>
+            <Link
+              onClick={props.handleSignOut}
+              className='header__login-link header__login-link_type_true'
+              to='/'
+            >
+              Выйти
+            </Link>
+          </Route>
+          <Route path='/sign-up'>
+            <Link
+              className='header__login-link header__login-link_type_false'
+              to='/sign-in'
+            >
+              Войти
+            </Link>
+          </Route>
+          <Route path='/sign-in'>
+            <Link
+              className='header__login-link header__login-link_type_false'
+              to='/sign-up'
+            >
+              Регистрация
+            </Link>
+          </Route>
+        </Switch>
+      </div>
     </header>
   );
 }

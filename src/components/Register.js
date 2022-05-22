@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+
 import { Link } from 'react-router-dom';
 
 function Register(props) {
@@ -21,11 +22,6 @@ function Register(props) {
   function handleChangePassword(e) {
     setPassword(e.target.value);
   }
-
-  useEffect(() => {
-    props.loginText();
-    props.loginPath();
-  }, []);
 
   return (
     <main className='main'>

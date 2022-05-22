@@ -39,8 +39,6 @@ function App() {
   });
 
   const [loggedIn, setLoggedIn] = useState(false);
-  const [loginText, setLoginText] = useState('');
-  const [loginPatch, setLoginPatch] = useState('');
 
   const [tooltip, setTooltip] = useState({
     isOpen: false,
@@ -49,44 +47,31 @@ function App() {
   });
 
   useEffect(() => {
-    api
-      .getProfile()
-      .then((res) => {
-        setCurrentUser({
-          name: res.name,
-          about: res.about,
-          avatar: res.avatar,
-          _id: res._id,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    api
-      .getInitialCards()
-      .then((res) => {
-        setCards(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    tokenCheck();
-
-    /* 
-    function closeEscPoppup(e) {
-      if (e.key === 'Escape') {
-        closeAllPopups()
-      }
-    }
-    window.addEventListener('keydown', closeEscPoppup);
-    return () => window.removeEventListener('keydown', closeEscPoppup);
-*/
-  }, []);
-
-  useEffect(() => {
     if (loggedIn) {
       history.push('/');
+      api
+        .getProfile()
+        .then((res) => {
+          setCurrentUser({
+            name: res.name,
+            about: res.about,
+            avatar: res.avatar,
+            _id: res._id,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      api
+        .getInitialCards()
+        .then((res) => {
+          setCards(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      tokenCheck();
     }
   }, [loggedIn]);
 
@@ -103,12 +88,12 @@ function App() {
     setEditAvatarPopupOpen(false);
     setAddPlacePopupOpen(false);
     setSelectedCard({
+      ...selectedCard,
       isOpen: false,
     });
     setTooltip({
+      ...tooltip,
       isOpen: false,
-      // message: null,
-      // image: null,
     });
   }
 
@@ -217,7 +202,6 @@ function App() {
       .then((data) => {
         if (data.token) {
           localStorage.setItem('jwt', data.token);
-          // console.log(loggedIn);
           tokenCheck();
         }
       })
@@ -264,8 +248,6 @@ function App() {
       <div className='root__container'>
         <Header
           loggedIn={loggedIn}
-          textLink={loginText}
-          loginPatch={loginPatch}
           userData={userData}
           handleSignOut={signOut}
         />
@@ -284,26 +266,10 @@ function App() {
             onCardDelete={handleCardDelete}
           />
           <Route path='/sign-up'>
-            <Register
-              handleRegister={handleRegister}
-              loginText={() => {
-                setLoginText('Войти');
-              }}
-              loginPath={() => {
-                setLoginPatch('/sign-in');
-              }}
-            />
+            <Register handleRegister={handleRegister} />
           </Route>
           <Route path='/sign-in'>
-            <Login
-              handleLogin={handleLogin}
-              loginText={() => {
-                setLoginText('Регистрация');
-              }}
-              loginPath={() => {
-                setLoginPatch('/sign-up');
-              }}
-            />
+            <Login handleLogin={handleLogin} />
           </Route>
         </Switch>
         <Footer />

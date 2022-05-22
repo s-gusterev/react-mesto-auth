@@ -12,7 +12,7 @@ function editProfilePopup(props) {
   useEffect(() => {
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, props.isOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -50,7 +50,7 @@ function editProfilePopup(props) {
           placeholder='Имя'
           minLength='2'
           maxLength='40'
-          value={name}
+          value={name || ''}
           onChange={handleChangeName}
         />
         <span className='popup__input-error input-name-error'></span>
@@ -65,7 +65,7 @@ function editProfilePopup(props) {
           placeholder='Род деятельности'
           minLength='2'
           maxLength='200'
-          value={description}
+          value={description || ''}
           onChange={handleChangeNDescription}
         />
         <span className='popup__input-error input-about-error'></span>
